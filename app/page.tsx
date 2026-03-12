@@ -2,8 +2,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 
+interface Settings {
+    trackedUrl: string;
+    targetEmail: string;
+    intervalMinutes?: number;
+}
+
 export default function Home() {
-    const [settings, setSettings] = useState({ trackedUrl: '', targetEmail: '' });
+    const [settings, setSettings] = useState<Settings>({ trackedUrl: '', targetEmail: '', intervalMinutes: 60 });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState('');
@@ -17,7 +23,7 @@ export default function Home() {
             });
     }, []);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSaving(true);
         setMessage('');
@@ -75,7 +81,7 @@ export default function Home() {
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-gray-400"
                                 placeholder="https://www.amazon.com/dp/B0..."
                                 value={settings.trackedUrl}
-                                onChange={(e) => setSettings({ ...settings, trackedUrl: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, trackedUrl: e.target.value })}
                             />
                         </div>
 
@@ -89,7 +95,7 @@ export default function Home() {
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-gray-400"
                                 placeholder="alerts@gmail.com"
                                 value={settings.targetEmail}
-                                onChange={(e) => setSettings({ ...settings, targetEmail: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, targetEmail: e.target.value })}
                             />
                         </div>
 
@@ -104,7 +110,7 @@ export default function Home() {
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-gray-400"
                                 placeholder="60"
                                 value={settings.intervalMinutes || 60}
-                                onChange={(e) => setSettings({ ...settings, intervalMinutes: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings({ ...settings, intervalMinutes: parseInt(e.target.value) || 0 })}
                             />
                         </div>
 
