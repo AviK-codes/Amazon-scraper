@@ -32,6 +32,10 @@ export async function GET(request) {
 
         const { isFreeShipping, title } = await checkFreeShipping(settings.trackedUrl);
 
+        if (title.startsWith('Error:')) {
+            return NextResponse.json({ message: `Scraper Error: ${title}`, title }, { status: 500 });
+        }
+
         if (isFreeShipping) {
             await sendEmail({
                 to: settings.targetEmail,
@@ -68,6 +72,6 @@ Link: ${settings.trackedUrl}
         return NextResponse.json({ message: `No free shipping found for "${title.substring(0, 30)}...".${isManual ? ' Email sent.' : ''}`, title });
     } catch (error) {
         console.error('Cron scrape error:', error);
-        return NextResponse.json({ message: 'Error checking shipping' }, { status: 500 });
+        return NextResponse.json({ message: `System Error: ${error.message}` }, { status: 500 });
     }
 }
