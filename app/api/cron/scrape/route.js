@@ -6,6 +6,7 @@ import { NextResponse } from 'next/server';
 // This is required for Vercel Cron Jobs
 export const revalidate = 0;
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60; // Max allowed for Vercel Hobby is 10s, but setting to 60 for Pro fallback
 
 export async function GET(request) {
     try {
